@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Project } from "@/data/projects";
 
 const ROTATIONS = [
@@ -34,44 +35,67 @@ export default function InstaxCard({ project, index, onClick }: InstaxCardProps)
     <button
       onClick={onClick}
       style={{ top: position.top, left: position.left }}
-      className={`absolute ${rotation} transition-transform duration-200 hover:scale-105 hover:shadow-2xl focus:outline-none group`}
+      className={`absolute ${rotation} transition-all duration-200 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl focus:outline-none text-left`}
     >
-      {/* Metal clip */}
-      <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center">
-        {/* Hook going into board hole */}
-        <div className="w-2 h-2 rounded-full bg-[#b0b0b0] border border-[#999] shadow-sm" />
-        {/* Clip body */}
-        <div className="w-8 h-3 bg-gradient-to-b from-[#d8d8d8] to-[#b8b8b8] rounded-sm border border-[#a0a0a0] shadow-md -mt-0.5" />
-      </div>
+      <div className="w-60 rounded-2xl overflow-hidden shadow-lg bg-white">
+        {/* Image / illustration area */}
+        <div className="relative w-full h-44 bg-[#3d2fa9] overflow-hidden">
+          {project.images?.[0] ? (
+            <Image
+              src={project.images[0]}
+              alt={project.title}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#4c3bc4] to-[#2a1f7a]" />
+          )}
 
-      {/* Instax frame */}
-      <div className="bg-white shadow-lg w-44 pt-4 pb-10 px-3 rounded-sm">
-        {/* Photo area */}
-        <div className="w-full aspect-square bg-stone-100 rounded-sm flex flex-col items-center justify-center gap-2 overflow-hidden">
-          {project.client && (
-            <span className="text-stone-400 text-xs font-medium uppercase tracking-widest">
-              {project.client}
-            </span>
+          {/* PwC logo overlay */}
+          {project.client === "PwC" && (
+            <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1.5 shadow-sm">
+              <Image
+                src="/images/pwc-logo.png"
+                alt="PwC"
+                width={44}
+                height={22}
+                className="object-contain"
+              />
+            </div>
           )}
         </div>
 
-        {/* Bottom text strip */}
-        <div className="mt-2 min-h-[2.5rem] flex flex-col justify-center items-start gap-1">
-          {project.title ? (
-            <p className="text-stone-700 text-sm font-medium leading-tight">
-              {project.title}
-            </p>
-          ) : (
-            <p className="text-stone-300 text-xs italic">projekt</p>
+        {/* Content area */}
+        <div className="px-5 py-4 flex flex-col gap-3">
+          {/* Tags — pills without # */}
+          {project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2.5 py-1 bg-stone-100 text-stone-500 rounded-full text-[10px] font-medium"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           )}
-          {project.tags.slice(0, 2).map((tag) => (
-            <span
-              key={tag}
-              className="px-1.5 py-0.5 bg-stone-100 text-stone-500 rounded-full text-[10px]"
-            >
-              {tag}
-            </span>
-          ))}
+
+          {/* Title */}
+          {project.title ? (
+            <h3 className="text-[15px] font-bold text-stone-900 leading-snug">
+              {project.title}
+            </h3>
+          ) : (
+            <h3 className="text-[15px] font-bold text-stone-300 leading-snug italic">projekt</h3>
+          )}
+
+          {/* Subtitle / description */}
+          {project.subtitle && (
+            <p className="text-[11px] text-stone-500 leading-relaxed -mt-1">
+              {project.subtitle}
+            </p>
+          )}
         </div>
       </div>
     </button>

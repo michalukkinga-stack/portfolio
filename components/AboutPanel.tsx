@@ -114,7 +114,7 @@ export default function AboutPanel() {
 
   return (
     <>
-      <div className="relative h-full bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col">
+      <div className="relative bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col h-full">
         {/* Title */}
         <div className="px-7 pt-8 pb-0 shrink-0">
           <h2 className="text-2xl font-bold text-stone-900">

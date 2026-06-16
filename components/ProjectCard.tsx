@@ -16,6 +16,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
     <button
       onClick={onClick}
       className="w-full rounded-2xl overflow-hidden bg-white shadow-sm border border-stone-100 text-left transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus:outline-none flex flex-col"
+      style={{ aspectRatio: "2/3" }}
     >
       {/* Image */}
       <div className="relative w-full overflow-hidden bg-[#ddd9f7]" style={{ aspectRatio: "16/9" }}>

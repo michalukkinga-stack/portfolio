@@ -39,16 +39,16 @@ function PageContent() {
       className="h-full flex flex-col p-6 gap-4 overflow-hidden mx-auto"
       style={{ maxWidth: "1200px" }}
     >
-      <h1 className="text-3xl font-bold text-stone-900 shrink-0 px-1">
+      <h1 className="text-3xl font-bold text-stone-900 shrink-0 px-1 mt-[80px] mb-[80px]">
         Hello, my name is Kinga
       </h1>
 
-      <div className="flex-1 flex gap-5 min-h-0">
-        <div className="w-[42%] h-full">
+      <div className="flex gap-5">
+        <div className="w-[42%]">
           <AboutPanel />
         </div>
 
-        <div className="flex-1 grid grid-cols-2 gap-4 auto-rows-fr overflow-y-auto">
+        <div className="flex-1 grid grid-cols-2 gap-4 auto-rows-max content-start">
           {projects.map((project, i) => (
             <ProjectCard
               key={project.id}

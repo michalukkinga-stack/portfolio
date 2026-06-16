@@ -3,28 +3,22 @@
 import Image from "next/image";
 import { Project } from "@/data/projects";
 
-const ICONS: Record<number, string> = {
-  0: "🖥",
-  1: "📱",
-  2: "</>",
-};
-
 interface ProjectCardProps {
   project: Project;
   index: number;
   onClick: () => void;
 }
 
-export default function ProjectCard({ project, index, onClick }: ProjectCardProps) {
-  const isFeatured = index === 1;
+export default function ProjectCard({ project, onClick }: ProjectCardProps) {
+  const hasContent = !!project.title;
 
   return (
     <button
       onClick={onClick}
-      className={`flex-1 max-w-sm rounded-3xl overflow-hidden shadow-lg bg-white text-left transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl focus:outline-none ${isFeatured ? "scale-105 shadow-xl" : ""}`}
+      className="w-full rounded-2xl overflow-hidden bg-white shadow-sm border border-stone-100 text-left transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus:outline-none flex flex-col"
     >
-      {/* Image area — dark indigo, ~60% of card */}
-      <div className="relative w-full bg-[#2d27a0] overflow-hidden" style={{ aspectRatio: "4/3" }}>
+      {/* Image */}
+      <div className="relative w-full overflow-hidden bg-[#ddd9f7]" style={{ aspectRatio: "16/9" }}>
         {project.images?.[0] ? (
           <Image
             src={project.images[0]}
@@ -33,51 +27,62 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
             className="object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#3d35c0] to-[#1e1870]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#c7c2f0] to-[#a89de8]" />
         )}
 
         {project.client === "PwC" && (
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1 shadow-sm">
-            <div className="flex gap-px items-end">
-              <div className="w-1.5 h-3.5 rounded-full bg-[#e3001b]" />
-              <div className="w-1.5 h-3.5 rounded-full bg-[#e3001b] opacity-65" />
-              <div className="w-1.5 h-3.5 rounded-full bg-[#e3001b] opacity-35" />
-            </div>
-            <span className="text-[11px] font-bold text-[#2d2d2d] tracking-tight">PwC</span>
+          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm">
+            <Image
+              src="/images/pwc-logo.png"
+              alt="PwC"
+              width={48}
+              height={24}
+              className="object-contain"
+            />
           </div>
         )}
       </div>
 
-      {/* Text area — white */}
-      <div className="px-5 py-4 flex flex-col gap-3">
-        {/* Tags */}
-        {project.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2.5 py-1 bg-stone-100 text-stone-500 rounded-full text-[10px] font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+      {/* Text */}
+      <div className="px-5 pb-5 flex flex-col flex-1" style={{ paddingTop: "10px" }}>
+        {hasContent ? (
+          <>
+            {/* Tags */}
+            {project.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mb-3" style={{ maxHeight: "3.2em", overflow: "hidden" }}>
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[9px] font-medium text-[#7c6abf] bg-[#f0edfb] rounded-full px-2 py-0.5 leading-tight"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
-        {/* Title */}
-        {project.title ? (
-          <h3 className="text-[17px] font-bold text-stone-900 leading-snug">
-            {project.title}
-          </h3>
+            {/* Title */}
+            <h3 className="text-[16px] font-bold text-stone-900 leading-snug mb-2">
+              {project.title}
+            </h3>
+
+            {/* Subtitle / description */}
+            {project.subtitle && (
+              <p className="text-[13px] text-stone-500 leading-relaxed mb-4">
+                {project.subtitle}
+              </p>
+            )}
+
+            {/* View link */}
+            <div className="mt-auto flex items-center gap-1.5 text-[12px] font-medium text-stone-400 hover:text-stone-700 transition-colors">
+              View project
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" />
+              </svg>
+            </div>
+          </>
         ) : (
-          <h3 className="text-[17px] font-bold text-stone-300 italic leading-snug">projekt</h3>
-        )}
-
-        {/* Subtitle */}
-        {project.subtitle && (
-          <p className="text-[13px] text-stone-500 leading-relaxed -mt-1">
-            {project.subtitle}
-          </p>
+          <p className="text-[13px] text-stone-300 italic m-auto">projekt</p>
         )}
       </div>
     </button>

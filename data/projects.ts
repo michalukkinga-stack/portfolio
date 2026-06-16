@@ -40,6 +40,7 @@ export interface Slide {
   footerTags?: string[];
   phases?: ProcessPhase[];
   concepts?: Concept[];
+  hideFromNav?: boolean;
 }
 
 export interface Project {
@@ -257,6 +258,7 @@ export const projects: Project[] = [
       },
       {
         layout: "two-col",
+        hideFromNav: true,
         image: "/images/hce-reports.png",
         sections: [
           {

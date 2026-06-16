@@ -1,35 +1,25 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Project, Slide, SlideSection, ProcessPhase, Concept } from "@/data/projects";
+import { useEffect, useRef, useState } from "react";
+import { Project, Slide, SlideSection, Concept } from "@/data/projects";
 
 interface ModalProps {
   project: Project;
   onClose: () => void;
 }
 
+/* ── helpers ─────────────────────────────────────────────── */
+
 function TagChip({ tag }: { tag: string }) {
   return (
-    <span className="px-2.5 py-1 bg-orange-50 text-orange-500 border border-orange-200 rounded-full text-xs font-medium">
+    <span className="px-2.5 py-1 bg-violet-50 text-violet-600 border border-violet-100 rounded-full text-[11px] font-medium">
       #{tag}
     </span>
   );
 }
 
-function FooterTags({ tags }: { tags: string[] }) {
-  if (!tags.length) return null;
-  return (
-    <div className="flex flex-wrap gap-1.5 pt-5 mt-auto border-t border-stone-100">
-      {tags.map((tag) => <TagChip key={tag} tag={tag} />)}
-    </div>
-  );
-}
-
-/** Podświetla frazy bold w tekście na podstawie tablicy boldPhrases */
 function BoldText({ text, boldPhrases }: { text: string; boldPhrases?: string[] }) {
-  if (!boldPhrases || boldPhrases.length === 0) {
-    return <>{text}</>;
-  }
+  if (!boldPhrases?.length) return <>{text}</>;
   const escaped = boldPhrases.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   const regex = new RegExp(`(${escaped.join("|")})`, "gi");
   const parts = text.split(regex);
@@ -48,26 +38,26 @@ function BoldText({ text, boldPhrases }: { text: string; boldPhrases?: string[] 
 
 function SectionBlock({ section }: { section: SlideSection }) {
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {section.label && (
-        <p className="text-lg font-bold text-stone-900 mb-2">{section.label}</p>
+        <p className="text-sm font-bold text-stone-900 uppercase tracking-wide">{section.label}</p>
       )}
       {section.text && !section.bullets && (
-        <p className="text-stone-600 leading-relaxed">
+        <p className="text-stone-600 leading-relaxed text-[15px]">
           <BoldText text={section.text} boldPhrases={section.boldPhrases} />
         </p>
       )}
       {section.bullets && (
-        <div>
+        <div className="flex flex-col gap-1">
           {section.text && (
-            <p className="text-stone-600 leading-relaxed mb-2">
+            <p className="text-stone-600 leading-relaxed text-[15px] mb-1">
               <BoldText text={section.text} boldPhrases={section.boldPhrases} />
             </p>
           )}
           <ul className="flex flex-col gap-2.5">
             {section.bullets.map((b, j) => (
-              <li key={j} className="flex gap-2 text-stone-600 leading-relaxed">
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-stone-400 shrink-0" />
+              <li key={j} className="flex gap-2.5 text-stone-600 leading-relaxed text-[15px]">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-violet-300 shrink-0" />
                 <span>
                   {b.boldPrefix && <strong className="text-stone-900">{b.boldPrefix}</strong>}
                   {b.text}
@@ -78,7 +68,7 @@ function SectionBlock({ section }: { section: SlideSection }) {
         </div>
       )}
       {section.tags && section.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-3">
+        <div className="flex flex-wrap gap-1.5 mt-2">
           {section.tags.map((tag) => <TagChip key={tag} tag={tag} />)}
         </div>
       )}
@@ -86,174 +76,54 @@ function SectionBlock({ section }: { section: SlideSection }) {
   );
 }
 
-/* --- COVER layout --- */
-function CoverSlide({ slide }: { slide: Slide }) {
+/* ── section renderers ────────────────────────────────────── */
+
+function CoverSection({ slide }: { slide: Slide }) {
   const [imgLeft, imgRight] = slide.images ?? [];
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div className="flex gap-10 flex-1 items-start">
-        {/* Left column: text + optional small mockup */}
-        <div className="flex flex-col justify-between h-full flex-1">
-          <div>
-            <h2 className="text-4xl font-bold text-stone-900 mb-4 leading-tight">{slide.title}</h2>
-            {slide.subtitle && (
-              <p className="text-xl text-stone-500 leading-relaxed">{slide.subtitle}</p>
-            )}
-          </div>
-          {imgLeft && (
-            <div className="mt-8 w-[85%] rounded-lg overflow-hidden shadow-md border border-stone-100">
-              <img src={imgLeft} alt="" className="w-full h-auto object-cover" />
+    <div className="flex flex-col gap-8">
+      <div className="flex gap-8 items-start">
+        <div className="flex-1 flex flex-col gap-3">
+          {slide.subtitle && (
+            <p className="text-stone-500 text-[16px] leading-relaxed">{slide.subtitle}</p>
+          )}
+          {slide.footerTags && slide.footerTags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 pt-2">
+              {slide.footerTags.map((t) => <TagChip key={t} tag={t} />)}
             </div>
           )}
         </div>
-        {/* Right column: main mockup */}
-        {imgRight && (
-          <div className="w-[48%] shrink-0 rounded-lg overflow-hidden shadow-md border border-stone-100 self-end">
-            <img src={imgRight} alt="" className="w-full h-auto object-cover" />
-          </div>
+      </div>
+      {(imgLeft || imgRight) && (
+        <div className="flex gap-5">
+          {imgLeft && (
+            <div className="flex-1 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+              <img src={imgLeft} alt="" className="w-full h-auto object-cover" />
+            </div>
+          )}
+          {imgRight && (
+            <div className="flex-1 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+              <img src={imgRight} alt="" className="w-full h-auto object-cover" />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ClientSection({ slide }: { slide: Slide }) {
+  return (
+    <div className="flex items-center gap-12">
+      <div className="flex flex-col gap-3 flex-1">
+        {slide.sections.map((s, i) =>
+          s.label ? null : (
+            <p key={i} className="text-stone-500 leading-relaxed text-[15px]">{s.text}</p>
+          )
         )}
       </div>
-      <FooterTags tags={slide.footerTags ?? []} />
-    </div>
-  );
-}
-
-/* --- PROCESS layout --- */
-function ProcessSlide({ slide }: { slide: Slide }) {
-  const phases = slide.phases ?? [];
-  return (
-    <div className="flex flex-col h-full">
-      {slide.title && (
-        <h2 className="text-2xl font-bold text-stone-900 mb-8">{slide.title}</h2>
-      )}
-      <div className="flex gap-0 flex-1 items-start relative">
-        {/* Connecting line */}
-        <div className="absolute top-[22px] left-[28px] right-[28px] h-px bg-stone-200 z-0" />
-        {phases.map((phase, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center relative z-10">
-            {/* Circle */}
-            <div className="w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold mb-3 shrink-0 shadow-sm">
-              {i + 1}
-            </div>
-            <p className="font-bold text-stone-900 text-sm mb-3 text-center">{phase.name}</p>
-            <ul className="flex flex-col gap-1.5 w-full px-2">
-              {phase.activities.map((act, j) => (
-                <li key={j} className="flex gap-1.5 text-stone-500 text-xs leading-relaxed">
-                  <span className="mt-1 w-1 h-1 rounded-full bg-stone-300 shrink-0" />
-                  {act}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <FooterTags tags={slide.footerTags ?? []} />
-    </div>
-  );
-}
-
-/* --- CONCEPTS (A/B testing) layout --- */
-function ConceptsSlide({ slide }: { slide: Slide }) {
-  const concepts = slide.concepts ?? [];
-  return (
-    <div className="flex flex-col h-full">
-      <div className="flex gap-5 flex-1">
-        {concepts.map((concept, i) => (
-          <div key={i} className="flex-1 flex flex-col border border-stone-100 rounded-xl overflow-hidden bg-stone-50">
-            {concept.image && (
-              <div className="w-full h-40 bg-stone-100 shrink-0">
-                <img src={concept.image} alt={concept.title} className="w-full h-full object-cover" />
-              </div>
-            )}
-            <div className="p-5 flex flex-col flex-1">
-              <p className="font-bold text-stone-900 text-sm mb-4">{concept.title}</p>
-              {concept.pros.length > 0 && (
-                <ul className="flex flex-col gap-2 mb-4">
-                  {concept.pros.map((pro, j) => (
-                    <li key={j} className="flex gap-2 text-stone-600 text-xs leading-relaxed">
-                      <span className="mt-1 text-emerald-500 shrink-0 font-bold">+</span>
-                      {pro}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {concept.cons.length > 0 && (
-                <ul className="flex flex-col gap-2">
-                  {concept.cons.map((con, j) => (
-                    <li key={j} className="flex gap-2 text-stone-600 text-xs leading-relaxed">
-                      <span className="mt-1 text-orange-400 shrink-0 font-bold">–</span>
-                      {con}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-      <FooterTags tags={slide.footerTags ?? []} />
-    </div>
-  );
-}
-
-/* --- PERSONAS layout --- */
-function PersonasSlide({ slide }: { slide: Slide }) {
-  return (
-    <div className="flex flex-col h-full">
-      {slide.title && (
-        <h2 className="text-2xl font-bold text-stone-900 mb-8">{slide.title}</h2>
-      )}
-      <div className="flex gap-6 flex-1">
-        {(slide.personas ?? []).map((persona, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center text-center">
-            <div className="w-28 h-28 rounded-full bg-stone-100 mb-4 overflow-hidden shrink-0">
-              {persona.image ? (
-                <img src={persona.image} alt={persona.name} className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-stone-300 text-xs italic">foto</div>
-              )}
-            </div>
-            <p className="font-bold text-stone-900 mb-3">{persona.name}</p>
-            <ul className="text-left flex flex-col gap-1.5 w-full">
-              {persona.bullets.map((b, j) => (
-                <li key={j} className="flex gap-2 text-stone-600 text-sm leading-relaxed">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-stone-400 shrink-0" />
-                  {b}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <FooterTags tags={slide.footerTags ?? []} />
-    </div>
-  );
-}
-
-/* --- CLIENT layout --- */
-function ClientSlide({ slide }: { slide: Slide }) {
-  return (
-    <div className="flex h-full items-center gap-16">
-      {/* Left: text */}
-      <div className="flex flex-col gap-4 flex-1">
-        {slide.sections.map((section, i) => (
-          <div key={i}>
-            {section.label && (
-              <p className="text-sm font-bold text-stone-900 mb-1">{section.label}</p>
-            )}
-            {section.text && (
-              <p className={section.label ? "text-3xl font-bold text-stone-900 leading-tight" : "text-stone-500 leading-relaxed mt-4"}>
-                {section.label
-                  ? <BoldText text={section.text} boldPhrases={section.boldPhrases} />
-                  : <BoldText text={section.text} boldPhrases={section.boldPhrases} />}
-              </p>
-            )}
-          </div>
-        ))}
-      </div>
-      {/* Right: logo box */}
       {slide.image && (
-        <div className="shrink-0 w-[38%] border border-blue-300 rounded-sm flex items-center justify-center p-10">
+        <div className="shrink-0 w-48 flex items-center justify-center p-8">
           <img src={slide.image} alt="Client logo" className="w-full h-auto object-contain" />
         </div>
       )}
@@ -261,104 +131,241 @@ function ClientSlide({ slide }: { slide: Slide }) {
   );
 }
 
-/* --- TWO-COL layout --- */
-function TwoColSlide({ slide }: { slide: Slide }) {
+function ProcessSection({ slide }: { slide: Slide }) {
+  const phases = slide.phases ?? [];
   return (
-    <div className="flex flex-col h-full">
-      {slide.title && (
-        <h2 className="text-2xl font-bold text-stone-900 mb-6">{slide.title}</h2>
-      )}
-      <div className="flex gap-8 flex-1">
-        <div className="flex-1 flex flex-col gap-5">
-          {slide.sections.map((section, i) => (
-            <SectionBlock key={i} section={section} />
-          ))}
-        </div>
-        {slide.image !== undefined && (
-          <div className="w-72 shrink-0 bg-stone-100 rounded-xl flex items-center justify-center text-stone-300 text-sm italic">
-            {slide.image ? (
-              <img src={slide.image} alt="" className="w-full h-full object-contain rounded-xl" />
-            ) : (
-              "Zdjęcie wkrótce"
-            )}
+    <div className="relative">
+      <div className="absolute top-[22px] left-[22px] right-[22px] h-px bg-stone-200" />
+      <div className="flex gap-0">
+        {phases.map((phase, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center relative">
+            <div className="w-11 h-11 rounded-full bg-violet-600 text-white flex items-center justify-center text-sm font-bold mb-4 shrink-0 shadow-sm z-10">
+              {i + 1}
+            </div>
+            <p className="font-bold text-stone-900 text-sm mb-3 text-center">{phase.name}</p>
+            <ul className="flex flex-col gap-1.5 w-full px-3">
+              {phase.activities.map((act, j) => (
+                <li key={j} className="flex gap-1.5 text-stone-500 text-[13px] leading-relaxed">
+                  <span className="mt-1 w-1 h-1 rounded-full bg-violet-200 shrink-0" />
+                  {act}
+                </li>
+              ))}
+            </ul>
           </div>
-        )}
-      </div>
-      <FooterTags tags={slide.footerTags ?? []} />
-    </div>
-  );
-}
-
-/* --- FULL IMAGE layout --- */
-function FullImageSlide({ slide }: { slide: Slide }) {
-  return (
-    <div className="absolute inset-0 flex flex-col">
-      {slide.image && (
-        <img src={slide.image} alt={slide.title ?? ""} className="w-full h-full object-cover" />
-      )}
-    </div>
-  );
-}
-
-/* --- DEFAULT layout --- */
-function DefaultSlide({ slide }: { slide: Slide }) {
-  return (
-    <div className="flex flex-col h-full">
-      {slide.title && (
-        <h2 className="text-2xl font-bold text-stone-900 mb-6">{slide.title}</h2>
-      )}
-      {slide.image !== undefined && !slide.title && (
-        <div className="flex-1 bg-stone-100 rounded-xl flex items-center justify-center text-stone-300 text-sm italic">
-          {slide.image ? (
-            <img src={slide.image} alt="" className="w-full h-full object-contain rounded-xl" />
-          ) : "Zdjęcie wkrótce"}
-        </div>
-      )}
-      {slide.image !== undefined && slide.title && (
-        <div className="w-full h-52 bg-stone-100 rounded-xl flex items-center justify-center text-stone-300 text-sm italic shrink-0 mb-5">
-          {slide.image ? (
-            <img src={slide.image} alt="" className="w-full h-full object-contain rounded-xl" />
-          ) : "Zdjęcie wkrótce"}
-        </div>
-      )}
-      <div className="flex flex-col gap-5 flex-1">
-        {slide.sections.map((section, i) => (
-          <SectionBlock key={i} section={section} />
         ))}
       </div>
-      <FooterTags tags={slide.footerTags ?? []} />
     </div>
   );
 }
 
-function SlideView({ slide }: { slide: Slide }) {
-  if (slide.layout === "cover") return <CoverSlide slide={slide} />;
-  if (slide.layout === "process") return <ProcessSlide slide={slide} />;
-  if (slide.layout === "concepts") return <ConceptsSlide slide={slide} />;
-  if (slide.layout === "personas") return <PersonasSlide slide={slide} />;
-  if (slide.layout === "client") return <ClientSlide slide={slide} />;
-  if (slide.layout === "two-col") return <TwoColSlide slide={slide} />;
-  if (slide.layout === "fullimage") return <FullImageSlide slide={slide} />;
-  return <DefaultSlide slide={slide} />;
+function PersonasSection({ slide }: { slide: Slide }) {
+  return (
+    <div className="flex gap-8">
+      {(slide.personas ?? []).map((persona, i) => (
+        <div key={i} className="flex-1 flex flex-col items-center text-center">
+          <div className="w-[105px] h-[105px] rounded-full mb-4 overflow-hidden shrink-0 bg-stone-100">
+            {persona.image ? (
+              <img src={persona.image} alt={persona.name} className="block w-full h-full object-cover object-center" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-stone-300 text-xs italic">foto</div>
+            )}
+          </div>
+          <p className="font-bold text-stone-900 mb-3 text-[15px]">{persona.name}</p>
+          <ul className="text-left flex flex-col gap-1.5 w-full">
+            {persona.bullets.map((b, j) => (
+              <li key={j} className="flex gap-2 text-stone-500 text-[14px] leading-relaxed">
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-violet-300 shrink-0" />
+                {b}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
 }
+
+function ConceptsSection({ slide }: { slide: Slide }) {
+  const concepts: Concept[] = slide.concepts ?? [];
+  return (
+    <div className="flex gap-5">
+      {concepts.map((concept, i) => (
+        <div key={i} className="flex-1 flex flex-col border border-stone-100 rounded-xl overflow-hidden bg-stone-50">
+          {concept.image && (
+            <div className="w-full h-44 bg-stone-100 shrink-0">
+              <img src={concept.image} alt={concept.title} className="w-full h-full object-cover" />
+            </div>
+          )}
+          <div className="p-5 flex flex-col gap-3 flex-1">
+            <p className="font-bold text-stone-900 text-sm">{concept.title}</p>
+            {concept.pros.length > 0 && (
+              <ul className="flex flex-col gap-1.5">
+                {concept.pros.map((pro, j) => (
+                  <li key={j} className="flex gap-2 text-stone-600 text-[13px] leading-relaxed">
+                    <span className="mt-0.5 text-emerald-500 shrink-0 font-bold text-xs">+</span>
+                    {pro}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {concept.cons.length > 0 && (
+              <ul className="flex flex-col gap-1.5">
+                {concept.cons.map((con, j) => (
+                  <li key={j} className="flex gap-2 text-stone-600 text-[13px] leading-relaxed">
+                    <span className="mt-0.5 text-orange-400 shrink-0 font-bold text-xs">–</span>
+                    {con}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TwoColSection({ slide }: { slide: Slide }) {
+  return (
+    <div className="flex gap-10 items-start">
+      <div className="flex-1 flex flex-col gap-5">
+        {slide.sections.map((s, i) => <SectionBlock key={i} section={s} />)}
+      </div>
+      {slide.image && (
+        <div className="w-72 shrink-0 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+          <img src={slide.image} alt="" className="w-full h-auto object-cover" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FullImageSection({ slide }: { slide: Slide }) {
+  return slide.image ? (
+    <div className="rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+      <img src={slide.image} alt={slide.title ?? ""} className="w-full h-auto object-cover" />
+    </div>
+  ) : null;
+}
+
+function DefaultSection({ slide }: { slide: Slide }) {
+  return (
+    <div className="flex flex-col gap-6">
+      {slide.image && (
+        <div className="rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+          <img src={slide.image} alt="" className="w-full h-auto object-cover" />
+        </div>
+      )}
+      <div className="flex flex-col gap-5">
+        {slide.sections.map((s, i) => <SectionBlock key={i} section={s} />)}
+      </div>
+    </div>
+  );
+}
+
+function SlideBody({ slide }: { slide: Slide }) {
+  if (slide.layout === "cover") return <CoverSection slide={slide} />;
+  if (slide.layout === "client") return <ClientSection slide={slide} />;
+  if (slide.layout === "process") return <ProcessSection slide={slide} />;
+  if (slide.layout === "personas") return <PersonasSection slide={slide} />;
+  if (slide.layout === "concepts") return <ConceptsSection slide={slide} />;
+  if (slide.layout === "two-col") return <TwoColSection slide={slide} />;
+  if (slide.layout === "fullimage") return <FullImageSection slide={slide} />;
+  return <DefaultSection slide={slide} />;
+}
+
+/* ── section title derivation ────────────────────────────── */
+
+function getSectionTitle(slide: Slide, index: number): string {
+  if (slide.title) return slide.title;
+  if (slide.layout === "cover") return "Overview";
+  if (slide.layout === "client") return "Client";
+  if (slide.layout === "concepts") return "Concept testing";
+  // Derive from image filename: "/images/hce-reports.png" → "Reports"
+  if (slide.image) {
+    const base = slide.image.split("/").pop()?.replace(/\.[^.]+$/, "") ?? "";
+    const name = base.replace(/^[a-z]+-/, "").replace(/-/g, " ");
+    if (name) return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+  return `Section ${index + 1}`;
+}
+
+function slugify(str: string) {
+  return str.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+}
+
+/* ── TOC sidebar ─────────────────────────────────────────── */
+
+function Toc({ sections, activeId }: { sections: { id: string; label: string }[]; activeId: string }) {
+  return (
+    <nav className="flex flex-col gap-1 w-full">
+      {sections.map((s) => {
+        const isActive = s.id === activeId;
+        return (
+          <a
+            key={s.id}
+            href={`#${s.id}`}
+            className={`group flex items-center gap-2.5 py-1.5 text-[13px] leading-snug transition-colors ${
+              isActive ? "text-violet-700 font-semibold" : "text-stone-400 hover:text-stone-700"
+            }`}
+          >
+            <span
+              className={`shrink-0 w-0.5 h-4 rounded-full transition-all ${
+                isActive ? "bg-violet-500" : "bg-stone-200 group-hover:bg-stone-300"
+              }`}
+            />
+            {s.label}
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
+/* ── main modal ─────────────────────────────────────────── */
 
 export default function Modal({ project, onClose }: ModalProps) {
   const slides = project.slides ?? [];
-  const hasSlides = slides.length > 0;
-  const [current, setCurrent] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [activeId, setActiveId] = useState<string>("");
 
-  const prev = useCallback(() => setCurrent((c) => Math.max(0, c - 1)), []);
-  const next = useCallback(() => setCurrent((c) => Math.min(slides.length - 1, c + 1)), [slides.length]);
+  const allSlideMeta = slides.map((slide, i) => ({
+    id: slugify(getSectionTitle(slide, i)),
+    label: getSectionTitle(slide, i),
+    hidden: !!slide.hideFromNav,
+  }));
+  const tocSections = allSlideMeta.filter((s) => !s.hidden);
+
+  useEffect(() => {
+    if (tocSections.length > 0) setActiveId(tocSections[0].id);
+  }, []);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    function onScroll() {
+      const sectionEls = tocSections.map(({ id }) => document.getElementById(id));
+      let current = tocSections[0]?.id ?? "";
+      for (const sec of sectionEls) {
+        if (sec && sec.getBoundingClientRect().top < el!.getBoundingClientRect().top + 120) {
+          current = sec.id;
+        }
+      }
+      setActiveId(current);
+    }
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [tocSections.map((s) => s.id).join(",")]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
       if (e.key === "Escape") onClose();
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [prev, next, onClose]);
+  }, [onClose]);
 
   return (
     <div
@@ -366,86 +373,69 @@ export default function Modal({ project, onClose }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative bg-white rounded-2xl shadow-2xl flex flex-col"
-        style={{ width: "1400px", maxWidth: "95vw", height: "80vh" }}
+        className="relative bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        style={{ width: "1200px", maxWidth: "95vw", height: "88vh" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-[60px] pt-7 pb-4 border-b border-stone-100 shrink-0">
-          <div>
-            <p className="text-xs font-medium text-orange-500 uppercase tracking-widest mb-0.5">
-              {project.client ?? ""}
-            </p>
-            <h1 className="text-lg font-bold text-stone-900 leading-tight">{project.title}</h1>
-          </div>
+        <div className="flex items-center justify-between px-10 py-3.5 border-b border-stone-100 shrink-0">
+          <h1 className="text-base font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-lora)" }}>
+            {project.title}
+          </h1>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
-            aria-label="Zamknij"
+            className="w-7 h-7 flex items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
+            aria-label="Close"
           >
             ✕
           </button>
         </div>
 
-        {/* Slide content */}
-        {hasSlides && slides[current].layout === "fullimage" ? (
-          <div className="flex-1 relative overflow-hidden">
-            <SlideView slide={slides[current]} />
-          </div>
-        ) : (
-          <div className="flex-1 overflow-y-auto px-[60px] py-6">
-            <div className="w-full max-w-[900px]">
-              {hasSlides ? (
-                <SlideView slide={slides[current]} />
-              ) : (
-                <p className="text-stone-400 italic text-center py-12">Treść wkrótce…</p>
-              )}
+        {/* Body: sidebar + scrollable content */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* Sidebar TOC */}
+          <aside className="w-52 shrink-0 border-r border-stone-100 px-6 py-8 overflow-y-auto">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-300 mb-4">Contents</p>
+            <Toc sections={tocSections} activeId={activeId} />
+          </aside>
+
+          {/* Scrollable article */}
+          <div ref={contentRef} className="flex-1 overflow-y-auto">
+            <div className="max-w-[820px] mx-auto px-12 py-10 flex flex-col gap-[60px]">
+              {slides.map((slide, i) => {
+                const { id, label, hidden } = allSlideMeta[i];
+                const isFirst = slide.layout === "cover";
+                return (
+                  <section key={id} id={id} className="scroll-mt-6">
+                    {isFirst ? (
+                      <h2
+                        className="text-4xl font-bold text-stone-900 mb-6 leading-tight"
+                        style={{ fontFamily: "var(--font-lora)" }}
+                      >
+                        {slide.title}
+                      </h2>
+                    ) : !hidden ? (
+                      <div className="mb-6">
+                        <h2
+                          className="text-2xl font-semibold text-stone-900 leading-snug"
+                          style={{ fontFamily: "var(--font-lora)" }}
+                        >
+                          {label}
+                        </h2>
+                      </div>
+                    ) : null}
+                    <SlideBody slide={slide} />
+                    {slide.footerTags && slide.footerTags.length > 0 && !isFirst && (
+                      <div className="flex flex-wrap gap-1.5 mt-6 pt-5 border-t border-stone-100">
+                        {slide.footerTags.map((t) => <TagChip key={t} tag={t} />)}
+                      </div>
+                    )}
+                  </section>
+                );
+              })}
             </div>
           </div>
-        )}
-
-        {/* Dot indicators */}
-        {hasSlides && (
-          <div className="flex items-center justify-center gap-1.5 pb-6 pt-3 shrink-0">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                className={`rounded-full transition-all ${
-                  i === current
-                    ? "w-5 h-2 bg-orange-500"
-                    : "w-2 h-2 bg-stone-300 hover:bg-stone-400"
-                }`}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Side chevrons */}
-        {hasSlides && (
-          <>
-            <button
-              onClick={prev}
-              disabled={current === 0}
-              aria-label="Poprzedni"
-              className="absolute left-[30px] top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md border border-stone-100 text-stone-500 hover:bg-stone-50 hover:text-stone-900 active:bg-stone-100 disabled:opacity-0 disabled:pointer-events-none transition-all"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="11 4 6 9 11 14" />
-              </svg>
-            </button>
-            <button
-              onClick={next}
-              disabled={current === slides.length - 1}
-              aria-label="Następny"
-              className="absolute right-[30px] top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md border border-stone-100 text-stone-500 hover:bg-stone-50 hover:text-stone-900 active:bg-stone-100 disabled:opacity-0 disabled:pointer-events-none transition-all"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="7 4 12 9 7 14" />
-              </svg>
-            </button>
-          </>
-        )}
+        </div>
       </div>
     </div>
   );

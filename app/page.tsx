@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { projects, Project } from "@/data/projects";
+import { projectsByLang, Project } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 import Modal from "@/components/Modal";
 import AboutPanel from "@/components/AboutPanel";
@@ -26,7 +26,11 @@ function LangToggle() {
 }
 
 function PageContent() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const { lang } = useLang();
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const projects = projectsByLang[lang];
+  const selectedProject: Project | null =
+    selectedIndex !== null ? projects[selectedIndex] : null;
 
   return (
     <div
@@ -54,14 +58,14 @@ function PageContent() {
               key={project.id}
               project={project}
               index={i}
-              onClick={() => setSelectedProject(project)}
+              onClick={() => setSelectedIndex(i)}
             />
           ))}
         </div>
       </div>
 
       {selectedProject && (
-        <Modal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        <Modal project={selectedProject} onClose={() => setSelectedIndex(null)} />
       )}
 
       <LangToggle />

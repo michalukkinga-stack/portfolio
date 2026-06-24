@@ -4,7 +4,7 @@ import { useState } from "react";
 import AboutModal from "./AboutModal";
 import { useLang } from "@/context/lang";
 
-const content = {
+export const aboutContent = {
   en: [
     <>
       <p className="text-stone-600 leading-relaxed text-sm mb-3">
@@ -108,7 +108,7 @@ export default function AboutPanel() {
   const [fullscreen, setFullscreen] = useState(false);
   const { lang } = useLang();
 
-  const slides = content[lang];
+  const slides = aboutContent[lang];
   const prev = () => setIndex((i) => (i - 1 + slides.length) % slides.length);
   const next = () => setIndex((i) => (i + 1) % slides.length);
 

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Project } from "@/data/projects";
+import { useLang } from "@/context/lang";
 
 interface ProjectCardProps {
   project: Project;
@@ -10,6 +11,7 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, onClick }: ProjectCardProps) {
+  const { lang } = useLang();
   const hasContent = !!project.title;
 
   return (
@@ -76,14 +78,14 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
 
             {/* View link */}
             <div className="mt-auto flex items-center gap-1.5 text-[12px] font-medium text-stone-400 hover:text-stone-700 transition-colors">
-              View project
+              {lang === "en" ? "View project" : "Zobacz projekt"}
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" />
               </svg>
             </div>
           </>
         ) : (
-          <p className="text-[13px] text-stone-300 italic m-auto">projekt</p>
+          <p className="text-[13px] text-stone-300 italic m-auto">{lang === "en" ? "project" : "projekt"}</p>
         )}
       </div>
     </button>

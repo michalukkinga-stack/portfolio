@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Project, Slide, SlideSection, Concept } from "@/data/projects";
+import { Project, Slide, SlideSection, Concept, Lang } from "@/data/projects";
+import { useLang } from "@/context/lang";
 
 interface ModalProps {
   project: Project;
@@ -37,15 +38,19 @@ function BoldText({ text, boldPhrases }: { text: string; boldPhrases?: string[] 
 }
 
 function SectionBlock({ section }: { section: SlideSection }) {
+  const { lang } = useLang();
   return (
     <div className="flex flex-col gap-2">
       {section.label && (
         <p className="text-sm font-bold text-stone-900 uppercase tracking-wide">{section.label}</p>
       )}
       {section.text && !section.bullets && (
-        <p className="text-stone-600 leading-relaxed text-[15px]">
+        <p className={`text-stone-600 leading-relaxed text-[15px] ${section.italic ? "italic" : ""}`}>
           <BoldText text={section.text} boldPhrases={section.boldPhrases} />
         </p>
+      )}
+      {section.cite && (
+        <p className="text-right text-sm font-bold text-stone-900 uppercase tracking-wide">{section.cite}</p>
       )}
       {section.bullets && (
         <div className="flex flex-col gap-1">
@@ -67,6 +72,26 @@ function SectionBlock({ section }: { section: SlideSection }) {
           </ul>
         </div>
       )}
+      {section.table && section.table.length > 0 && (
+        <div className="overflow-hidden rounded-xl border border-stone-100 mt-1">
+          <table className="w-full border-collapse text-[14px]">
+            <thead>
+              <tr className="bg-violet-50">
+                <th className="text-left font-semibold text-violet-700 px-4 py-2.5 w-[38%]">{lang === "en" ? "Feature" : "Funkcjonalność"}</th>
+                <th className="text-left font-semibold text-violet-700 px-4 py-2.5">{lang === "en" ? "Technical solution" : "Rozwiązanie techniczne"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {section.table.map((row, i) => (
+                <tr key={i} className="border-t border-stone-100 align-top">
+                  <td className="px-4 py-3 font-semibold text-stone-900">{row.feature}</td>
+                  <td className="px-4 py-3 text-stone-600 leading-relaxed">{row.solution}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       {section.tags && section.tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-2">
           {section.tags.map((tag) => <TagChip key={tag} tag={tag} />)}
@@ -86,11 +111,6 @@ function CoverSection({ slide }: { slide: Slide }) {
         <div className="flex-1 flex flex-col gap-3">
           {slide.subtitle && (
             <p className="text-stone-500 text-[16px] leading-relaxed">{slide.subtitle}</p>
-          )}
-          {slide.footerTags && slide.footerTags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 pt-2">
-              {slide.footerTags.map((t) => <TagChip key={t} tag={t} />)}
-            </div>
           )}
         </div>
       </div>
@@ -276,18 +296,18 @@ function SlideBody({ slide }: { slide: Slide }) {
 
 /* ── section title derivation ────────────────────────────── */
 
-function getSectionTitle(slide: Slide, index: number): string {
+function getSectionTitle(slide: Slide, index: number, lang: Lang): string {
   if (slide.title) return slide.title;
-  if (slide.layout === "cover") return "Overview";
-  if (slide.layout === "client") return "Client";
-  if (slide.layout === "concepts") return "Concept testing";
+  if (slide.layout === "cover") return lang === "en" ? "Overview" : "Przegląd";
+  if (slide.layout === "client") return lang === "en" ? "Client" : "Klient";
+  if (slide.layout === "concepts") return lang === "en" ? "Concept testing" : "Testowanie koncepcji";
   // Derive from image filename: "/images/hce-reports.png" → "Reports"
   if (slide.image) {
     const base = slide.image.split("/").pop()?.replace(/\.[^.]+$/, "") ?? "";
     const name = base.replace(/^[a-z]+-/, "").replace(/-/g, " ");
     if (name) return name.charAt(0).toUpperCase() + name.slice(1);
   }
-  return `Section ${index + 1}`;
+  return lang === "en" ? `Section ${index + 1}` : `Sekcja ${index + 1}`;
 }
 
 function slugify(str: string) {
@@ -314,7 +334,7 @@ function Toc({ sections, activeId }: { sections: { id: string; label: string }[]
                 isActive ? "bg-violet-500" : "bg-stone-200 group-hover:bg-stone-300"
               }`}
             />
-            {s.label}
+            {s.label.replace(/^\d+\.\s*/, "")}
           </a>
         );
       })}
@@ -325,13 +345,14 @@ function Toc({ sections, activeId }: { sections: { id: string; label: string }[]
 /* ── main modal ─────────────────────────────────────────── */
 
 export default function Modal({ project, onClose }: ModalProps) {
+  const { lang } = useLang();
   const slides = project.slides ?? [];
   const contentRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState<string>("");
 
   const allSlideMeta = slides.map((slide, i) => ({
-    id: slugify(getSectionTitle(slide, i)),
-    label: getSectionTitle(slide, i),
+    id: slugify(getSectionTitle(slide, i, lang)),
+    label: getSectionTitle(slide, i, lang),
     hidden: !!slide.hideFromNav,
   }));
   const tocSections = allSlideMeta.filter((s) => !s.hidden);
@@ -395,7 +416,6 @@ export default function Modal({ project, onClose }: ModalProps) {
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar TOC */}
           <aside className="w-52 shrink-0 border-r border-stone-100 px-6 py-8 overflow-y-auto">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-300 mb-4">Contents</p>
             <Toc sections={tocSections} activeId={activeId} />
           </aside>
 
@@ -408,19 +428,26 @@ export default function Modal({ project, onClose }: ModalProps) {
                 return (
                   <section key={id} id={id} className="scroll-mt-6">
                     {isFirst ? (
-                      <h2
-                        className="text-4xl font-bold text-stone-900 mb-6 leading-tight"
-                        style={{ fontFamily: "var(--font-lora)" }}
-                      >
-                        {slide.title}
-                      </h2>
+                      <>
+                        {slide.footerTags && slide.footerTags.length > 0 && (
+                          <div className="flex flex-wrap justify-end gap-1.5 mb-4">
+                            {slide.footerTags.map((t) => <TagChip key={t} tag={t} />)}
+                          </div>
+                        )}
+                        <h2
+                          className="text-4xl font-bold text-stone-900 mb-6 leading-tight"
+                          style={{ fontFamily: "var(--font-lora)" }}
+                        >
+                          {slide.title}
+                        </h2>
+                      </>
                     ) : !hidden ? (
                       <div className="mb-6">
                         <h2
                           className="text-2xl font-semibold text-stone-900 leading-snug"
                           style={{ fontFamily: "var(--font-lora)" }}
                         >
-                          {label}
+                          {label.replace(/^\d+\.\s*/, "")}
                         </h2>
                       </div>
                     ) : null}

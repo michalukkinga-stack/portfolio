@@ -114,19 +114,24 @@ function CoverSection({ slide }: { slide: Slide }) {
           )}
         </div>
       </div>
-      {(imgLeft || imgRight) && (
-        <div className="flex gap-5">
-          {imgLeft && (
-            <div className="flex-1 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
-              <img src={imgLeft} alt="" className="w-full h-auto object-cover" />
-            </div>
-          )}
-          {imgRight && (
-            <div className="flex-1 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
-              <img src={imgRight} alt="" className="w-full h-auto object-cover" />
-            </div>
-          )}
-        </div>
+      {imgLeft && !imgRight ? (
+        // Single transparent mockup: enlarged 140%, breaks out of the text column, no card border
+        <img src={imgLeft} alt="" className="w-[140%] max-w-none mx-[-20%] h-auto" />
+      ) : (
+        (imgLeft || imgRight) && (
+          <div className="flex gap-5">
+            {imgLeft && (
+              <div className="flex-1 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+                <img src={imgLeft} alt="" className="w-full h-auto object-cover" />
+              </div>
+            )}
+            {imgRight && (
+              <div className="flex-1 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+                <img src={imgRight} alt="" className="w-full h-auto object-cover" />
+              </div>
+            )}
+          </div>
+        )
       )}
     </div>
   );

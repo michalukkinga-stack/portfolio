@@ -36,7 +36,7 @@ function PageContent() {
     <div
       className="w-full h-screen overflow-hidden"
       style={{
-        background: "radial-gradient(ellipse at 60% 40%, #c7c2f0 0%, #ddd9f7 30%, #edeaf8 55%, #f5f4fc 75%, #fafafe 100%)",
+        background: "radial-gradient(ellipse at 60% 40%, #e9e2d9 0%, #efeae3 30%, #f4f1ec 55%, #faf8f5 75%, #ffffff 100%)",
       }}
     >
     <main

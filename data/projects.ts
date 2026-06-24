@@ -529,17 +529,18 @@ const project1Pl: Project = {
 const project2En: Project = {
   id: "project-2",
   title: "Dream Journal",
-  subtitle: "A web and mobile app for recording and analyzing dreams right after waking up.",
-  tags: ["Vibe Coding", "Product Design", "AI Agent", "0 → 1", "Mobile"],
+  subtitle: "A vibe-coded web and mobile app for recording dreams right after waking up — with a built-in AI agent who helps to analyze dreams.",
+  tags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
   description: "",
-  images: [],
+  images: ["/images/dream-journal-thumb.png"],
   slides: [
     {
       layout: "cover",
       title: "Dream Journal",
       subtitle: "A web and mobile app for recording and analyzing dreams right after waking up — with a built-in AI agent grounded in Jungian psychology.",
       sections: [],
-      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "0 → 1", "Mobile"],
+      images: ["/images/dream-mockup.png"],
+      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
     },
     {
       title: "1. Philosophy",
@@ -644,17 +645,18 @@ const project2En: Project = {
 const project2Pl: Project = {
   id: "project-2",
   title: "Dziennik Snów",
-  subtitle: "Aplikacja webowa i mobilna do zapisywania i analizowania snów zaraz po przebudzeniu.",
-  tags: ["Vibe Coding", "Product Design", "AI Agent", "0 → 1", "Mobile"],
+  subtitle: "Vibe-codowana aplikacja webowa i mobilna do zapisywania snów zaraz po przebudzeniu — z wbudowanym agentem AI, który pomaga analizować sny.",
+  tags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
   description: "",
-  images: [],
+  images: ["/images/dream-journal-thumb.png"],
   slides: [
     {
       layout: "cover",
       title: "Dziennik Snów",
       subtitle: "Aplikacja webowa i mobilna do zapisywania i analizowania snów zaraz po przebudzeniu — z wbudowanym agentem AI opartym na psychologii Junga.",
       sections: [],
-      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "0 → 1", "Mobile"],
+      images: ["/images/dream-mockup.png"],
+      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
     },
     {
       title: "1. Filozofia",

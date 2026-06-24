@@ -72,7 +72,7 @@ const project1En: Project = {
   subtitle: "A unified platform for evaluating and governing AI systems.",
   tags: ["UX Research", "User Interviews", "Personas", "Jobs to be done", "Prototyping", "Usability testing"],
   description: "",
-  images: ["/images/hce-cover.png"],
+  images: ["/images/hce-thumb.png"],
   client: "PwC",
   slides: [
     {
@@ -301,7 +301,7 @@ const project1Pl: Project = {
   subtitle: "Spójna platforma do oceny i nadzoru nad systemami AI.",
   tags: ["UX Research", "User Interviews", "Personas", "Jobs to be done", "Prototyping", "Usability testing"],
   description: "",
-  images: ["/images/hce-cover.png"],
+  images: ["/images/hce-thumb.png"],
   client: "PwC",
   slides: [
     {

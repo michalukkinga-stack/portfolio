@@ -434,11 +434,6 @@ export default function Modal({ project, onClose }: ModalProps) {
                   <section key={id} id={id} className="scroll-mt-6">
                     {isFirst ? (
                       <>
-                        {slide.footerTags && slide.footerTags.length > 0 && (
-                          <div className="flex flex-wrap justify-end gap-1.5 mb-4">
-                            {slide.footerTags.map((t) => <TagChip key={t} tag={t} />)}
-                          </div>
-                        )}
                         <h2
                           className="text-4xl font-bold text-stone-900 mb-6 leading-tight"
                           style={{ fontFamily: "var(--font-lora)" }}
@@ -457,7 +452,7 @@ export default function Modal({ project, onClose }: ModalProps) {
                       </div>
                     ) : null}
                     <SlideBody slide={slide} />
-                    {slide.footerTags && slide.footerTags.length > 0 && !isFirst && (
+                    {slide.footerTags && slide.footerTags.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mt-6 pt-5 border-t border-stone-100">
                         {slide.footerTags.map((t) => <TagChip key={t} tag={t} />)}
                       </div>

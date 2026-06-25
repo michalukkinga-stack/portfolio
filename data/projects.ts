@@ -97,6 +97,14 @@ const project1En: Project = {
       ],
     },
     {
+      title: "Business Challenge",
+      sections: [
+        {
+          text: "The client required a consistent, repeatable and auditable framework for evaluating the quality of AI outputs both prior to and following production deployment.",
+        },
+      ],
+    },
+    {
       title: "Design process",
       layout: "process",
       sections: [],
@@ -292,6 +300,18 @@ const project1En: Project = {
       ],
       footerTags: ["Key findings", "Problem solving", "Quick win"],
     },
+    {
+      title: "Impact",
+      sections: [
+        {
+          bullets: [
+            { text: "Transformation of the organization's approach to managing AI solution quality, shifting from a fragmented manual process to a centrally governed and standardized evaluation framework with a built-in governance mechanism." },
+            { text: "Establish a consistent and reliable approach to evaluating AI outputs, improving the accuracy, compatibility, and audibility of results across use cases." },
+            { text: "Increase organizational confidence in AI solutions by providing assurance that outputs meet defined quality standards both prior to production deployment and throughout their life cycle." },
+          ],
+        },
+      ],
+    },
   ],
 };
 
@@ -322,6 +342,14 @@ const project1Pl: Project = {
         },
         {
           text: "Consulting Factory to wewnętrzna platforma inicjatyw w PwC skoncentrowana na budowaniu i skalowaniu rozwiązań AI oraz GenAI dla zespołów konsultingowych.",
+        },
+      ],
+    },
+    {
+      title: "Business Challenge",
+      sections: [
+        {
+          text: "Klient potrzebował spójnego, powtarzalnego i audytowalnego frameworku do oceny jakości wyników AI — zarówno przed wdrożeniem produkcyjnym, jak i po nim.",
         },
       ],
     },
@@ -521,6 +549,18 @@ const project1Pl: Project = {
       ],
       footerTags: ["Key findings", "Problem solving", "Quick win"],
     },
+    {
+      title: "Impact",
+      sections: [
+        {
+          bullets: [
+            { text: "Transformacja podejścia organizacji do zarządzania jakością rozwiązań AI — przejście od fragmentarycznego procesu manualnego do centralnie zarządzanego i ustandaryzowanego frameworku ewaluacyjnego z wbudowanym mechanizmem governance." },
+            { text: "Ustanowienie spójnego i wiarygodnego podejścia do oceny wyników AI, poprawiającego dokładność, spójność i audytowalność rezultatów w różnych przypadkach użycia." },
+            { text: "Zwiększenie zaufania organizacji do rozwiązań AI poprzez zapewnienie, że wyniki spełniają zdefiniowane standardy jakości — zarówno przed wdrożeniem produkcyjnym, jak i przez cały cykl życia systemu." },
+          ],
+        },
+      ],
+    },
   ],
 };
 
@@ -530,7 +570,7 @@ const project2En: Project = {
   id: "project-2",
   title: "Dream Journal",
   subtitle: "A vibe-coded web and mobile app for recording dreams right after waking up — with a built-in AI agent who helps to analyze dreams.",
-  tags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
+  tags: ["Vibe Coding", "Product Design", "AI Agent", "Claude"],
   description: "",
   images: ["/images/dream-journal-thumb.png"],
   slides: [
@@ -629,22 +669,6 @@ const project2En: Project = {
         },
       ],
     },
-    {
-      title: "5. Outcome",
-      sections: [
-        {
-          text: "The app was created primarily for me — and I am its first, daily user. That's the best possible test: a tool I want to use myself every morning.",
-          boldPhrases: ["first, daily user"],
-        },
-        {
-          label: "What changed",
-          bullets: [
-            { boldPrefix: "The habit stuck", text: " — recording a dream now takes a few dozen seconds instead of requiring morning writing." },
-            { boldPrefix: "Dreams gained context", text: " — a conversation with Cztu turns a raw entry into a starting point for reflection." },
-          ],
-        },
-      ],
-    },
   ],
 };
 
@@ -652,7 +676,7 @@ const project2Pl: Project = {
   id: "project-2",
   title: "Dziennik Snów",
   subtitle: "Vibe-codowana aplikacja webowa i mobilna do zapisywania snów zaraz po przebudzeniu — z wbudowanym agentem AI, który pomaga analizować sny.",
-  tags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
+  tags: ["Vibe Coding", "Product Design", "AI Agent", "Claude"],
   description: "",
   images: ["/images/dream-journal-thumb.png"],
   slides: [

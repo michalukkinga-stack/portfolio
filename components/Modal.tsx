@@ -267,7 +267,7 @@ function TwoColSection({ slide }: { slide: Slide }) {
 
 function FullImageSection({ slide }: { slide: Slide }) {
   return slide.image ? (
-    <div className="rounded-xl overflow-hidden border border-stone-100 shadow-sm">
+    <div className="rounded-xl overflow-hidden">
       <img src={slide.image} alt={slide.title ?? ""} className="w-full h-auto object-cover" />
     </div>
   ) : null;
@@ -408,13 +408,20 @@ export default function Modal({ project, onClose }: ModalProps) {
           <h1 className="text-base font-bold text-stone-900 leading-tight" style={{ fontFamily: "var(--font-lora)" }}>
             {project.title}
           </h1>
-          <button
-            onClick={onClose}
-            className="w-7 h-7 flex items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
-            aria-label="Close"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-3">
+            {slides[0]?.footerTags && slides[0].footerTags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {slides[0].footerTags.map((t) => <TagChip key={t} tag={t} />)}
+              </div>
+            )}
+            <button
+              onClick={onClose}
+              className="w-7 h-7 flex items-center justify-center rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-700 transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Body: sidebar + scrollable content */}
@@ -452,11 +459,6 @@ export default function Modal({ project, onClose }: ModalProps) {
                       </div>
                     ) : null}
                     <SlideBody slide={slide} />
-                    {slide.footerTags && slide.footerTags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mt-6 pt-5 border-t border-stone-100">
-                        {slide.footerTags.map((t) => <TagChip key={t} tag={t} />)}
-                      </div>
-                    )}
                   </section>
                 );
               })}

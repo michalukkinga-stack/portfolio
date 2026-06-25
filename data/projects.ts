@@ -564,6 +564,7 @@ const project2En: Project = {
       layout: "fullimage",
       image: "/images/group-164156.png",
       hideFromNav: true,
+      sections: [],
     },
     {
       title: "2. Problem definition",

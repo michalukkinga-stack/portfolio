@@ -546,7 +546,7 @@ const project2En: Project = {
       title: "1. Philosophy",
       sections: [
         {
-          text: "“The dream is a spontaneous self-portrayal, in symbolic form, of the actual situation in the unconscious.”",
+          text: "\"The dream is a spontaneous self-portrayal, in symbolic form, of the actual situation in the unconscious.\"",
           italic: true,
           cite: "— C.G. Jung",
         },
@@ -561,6 +561,11 @@ const project2En: Project = {
       ],
     },
     {
+      layout: "fullimage",
+      image: "/images/group-164156.png",
+      hideFromNav: true,
+    },
+    {
       title: "2. Problem definition",
       sections: [
         {
@@ -568,12 +573,12 @@ const project2En: Project = {
         },
         {
           label: "The fleeting nature of dreams",
-          text: "“When I wake up in the morning, I'm amazed at how interesting and strange the dream I had was. Unfortunately, in the morning I'm too rushed to write it down anywhere — and when I sit down calmly in the evening, I no longer remember it.”",
+          text: "\"When I wake up in the morning, I'm amazed at how interesting and strange the dream I had was. Unfortunately, in the morning I'm too rushed to write it down anywhere — and when I sit down calmly in the evening, I no longer remember it.\"",
           italic: true,
         },
         {
           label: "The difficulty of interpreting dreams",
-          text: "“I dreamed of a blooming oak again. I'm curious whether the recurrence of this motif means something. Maybe it's a suggestion from my subconscious to make some decision or to confront something? It's hard for me to interpret it on my own, and I don't have time to browse through dream dictionaries.”",
+          text: "\"I dreamed of a blooming oak again. I'm curious whether the recurrence of this motif means something. Maybe it's a suggestion from my subconscious to make some decision or to confront something? It's hard for me to interpret it on my own, and I don't have time to browse through dream dictionaries.\"",
           italic: true,
         },
         {
@@ -582,11 +587,6 @@ const project2En: Project = {
         },
         {
           text: "On top of that, they are either too simple (an unstructured notepad that doesn't encourage consistency) or too complicated (dozens of categories to fill in manually).",
-        },
-        {
-          label: "Key insight",
-          text: "Dictating a dream right after waking up is not a matter of convenience — it is the only method that makes it possible to sustain the habit. Typing a long story at 7 a.m. on a phone keyboard is too much effort to do every day.",
-          boldPhrases: ["the only method that makes it possible to sustain the habit"],
         },
       ],
     },
@@ -597,9 +597,14 @@ const project2En: Project = {
           bullets: [
             { boldPrefix: "Instant dream capture", text: " — in less than 60 seconds, before the dream fades." },
             { boldPrefix: "Automatic organization", text: " — without manual tagging and categorizing." },
-            { boldPrefix: "The ability to “talk about the dream”", text: " — with someone who understands it and helps interpret it." },
+            { boldPrefix: "The ability to \"talk about the dream\"", text: " — with someone who understands it and helps interpret it." },
             { boldPrefix: "Access to history and patterns", text: " — recurring motifs that appear over time." },
           ],
+        },
+        {
+          label: "Key insight",
+          text: "Dictating a dream right after waking up is not a matter of convenience — it is the only method that makes it possible to sustain the habit. Typing a long story at 7 a.m. on a phone keyboard is too much effort to do every day.",
+          boldPhrases: ["the only method that makes it possible to sustain the habit"],
         },
         {
           label: "Design goal",
@@ -662,7 +667,7 @@ const project2Pl: Project = {
       title: "1. Filozofia",
       sections: [
         {
-          text: "„Sen jest ujętym w symboliczną formę spontanicznym autoportretem aktualnej sytuacji nieświadomej.”",
+          text: "\"Sen jest ujętym w symboliczną formę spontanicznym autoportretem aktualnej sytuacji nieświadomej.\"",
           italic: true,
           cite: "— C.G. Jung",
         },
@@ -684,12 +689,12 @@ const project2Pl: Project = {
         },
         {
           label: "Ulotność snów",
-          text: "„Gdy budzę się rano, jestem pod wrażeniem, jak ciekawy i dziwny sen miałam. Niestety rano jestem zbyt zabiegana, żeby go gdzieś zapisać — a gdy wieczorem siądę na spokojnie, to już go nie pamiętam.”",
+          text: "\"Gdy budzę się rano, jestem pod wrażeniem, jak ciekawy i dziwny sen miałam. Niestety rano jestem zbyt zabiegana, żeby go gdzieś zapisać — a gdy wieczorem siądę na spokojnie, to już go nie pamiętam.\"",
           italic: true,
         },
         {
           label: "Trudność w interpretacji snów",
-          text: "„Znowu przyśnił mi się kwitnący dąb. Jestem ciekawa, czy powracanie tego motywu coś oznacza. Może to sugestia od podświadomości, żebym podjęła jakąś decyzję albo zmierzyła się z czymś? Ciężko mi to zinterpretować samej, a nie mam czasu na przeglądanie senników.”",
+          text: "\"Znowu przyśnił mi się kwitnący dąb. Jestem ciekawa, czy powracanie tego motywu coś oznacza. Może to sugestia od podświadomości, żebym podjęła jakąś decyzję albo zmierzyła się z czymś? Ciężko mi to zinterpretować samej, a nie mam czasu na przeglądanie senników.\"",
           italic: true,
         },
         {
@@ -698,11 +703,6 @@ const project2Pl: Project = {
         },
         {
           text: "Są przy tym albo zbyt proste (notatnik bez struktury, niezachęcający do regularności), albo zbyt skomplikowane (dziesiątki kategorii do ręcznego wypełnienia).",
-        },
-        {
-          label: "Kluczowy insight",
-          text: "Dyktowanie snu zaraz po przebudzeniu to nie kwestia wygody — to jedyna metoda, która pozwala utrzymać nawyk. Wpisywanie długiej opowieści o 7 rano na klawiaturze telefonu to zbyt duży wysiłek, żeby robić to codziennie.",
-          boldPhrases: ["jedyna metoda, która pozwala utrzymać nawyk"],
         },
       ],
     },
@@ -713,9 +713,14 @@ const project2Pl: Project = {
           bullets: [
             { boldPrefix: "Błyskawiczny zapis snu", text: " — w mniej niż 60 sekund, zanim sen zblednie." },
             { boldPrefix: "Automatyczna organizacja", text: " — bez ręcznego tagowania i kategoryzowania." },
-            { boldPrefix: "Możliwość „pogadania o śnie”", text: " — z kimś, kto go zrozumie i pomoże zinterpretować." },
+            { boldPrefix: "Możliwość \"pogadania o śnie\"", text: " — z kimś, kto go zrozumie i pomoże zinterpretować." },
             { boldPrefix: "Dostęp do historii i wzorców", text: " — powracających motywów pojawiających się w czasie." },
           ],
+        },
+        {
+          label: "Kluczowy insight",
+          text: "Dyktowanie snu zaraz po przebudzeniu to nie kwestia wygody — to jedyna metoda, która pozwala utrzymać nawyk. Wpisywanie długiej opowieści o 7 rano na klawiaturze telefonu to zbyt duży wysiłek, żeby robić to codziennie.",
+          boldPhrases: ["jedyna metoda, która pozwala utrzymać nawyk"],
         },
         {
           label: "Cel projektowy",

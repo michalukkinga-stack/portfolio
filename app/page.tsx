@@ -47,12 +47,12 @@ function PageContent() {
         Hello, my name is Kinga
       </h1>
 
-      <div className="flex gap-5 justify-center shrink-0">
-        <div className="w-[484px] shrink-0">
+      <div className="flex gap-5 justify-center shrink-0 items-stretch">
+        <div className="w-[484px] shrink-0 flex flex-col">
           <AboutPanel />
         </div>
 
-        <div className="w-[648px] shrink-0 grid grid-cols-2 gap-4 auto-rows-max content-start">
+        <div className="w-[648px] shrink-0 grid grid-cols-2 gap-4 auto-rows-fr">
           {projects.map((project, i) => (
             <ProjectCard
               key={project.id}

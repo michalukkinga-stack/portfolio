@@ -790,17 +790,9 @@ const project2Pl: Project = {
 
 /* ── Project 3: placeholder ──────────────────────────────────── */
 
-const project3: Project = {
-  id: "project-3",
-  title: "",
-  tags: [],
-  description: "",
-  images: [],
-};
-
 export const projectsByLang: Record<Lang, Project[]> = {
-  en: [project1En, project2En, project3],
-  pl: [project1Pl, project2Pl, project3],
+  en: [project1En, project2En],
+  pl: [project1Pl, project2Pl],
 };
 
 // Default export keeps the English content for any non-localized usage.

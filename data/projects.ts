@@ -580,7 +580,7 @@ const project2En: Project = {
       subtitle: "A web and mobile app for recording and analyzing dreams right after waking up — with a built-in AI agent grounded in Jungian psychology.",
       sections: [],
       images: ["/images/dream-mockup.png"],
-      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
+      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "Claude"],
     },
     {
       title: "1. Philosophy",
@@ -686,7 +686,7 @@ const project2Pl: Project = {
       subtitle: "Aplikacja webowa i mobilna do zapisywania i analizowania snów zaraz po przebudzeniu — z wbudowanym agentem AI opartym na psychologii Junga.",
       sections: [],
       images: ["/images/dream-mockup.png"],
-      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "Mobile"],
+      footerTags: ["Vibe Coding", "Product Design", "AI Agent", "Claude"],
     },
     {
       title: "1. Filozofia",

@@ -80,7 +80,7 @@ const project1En: Project = {
       title: "Human Centered Evaluator",
       subtitle: "A unified platform for evaluating and governing AI systems.",
       sections: [],
-      images: ["/images/hce-use-cases.png", "/images/hce-cover.png"],
+      images: ["/images/hce-new.png"],
       footerTags: ["UX Research", "User Interviews", "Personas", "Jobs to be done", "Prototyping", "Usability testing"],
     },
     {
@@ -329,7 +329,7 @@ const project1Pl: Project = {
       title: "Human Centered Evaluator",
       subtitle: "Spójna platforma do oceny i nadzoru nad systemami AI.",
       sections: [],
-      images: ["/images/hce-use-cases.png", "/images/hce-cover.png"],
+      images: ["/images/hce-new.png"],
       footerTags: ["UX Research", "User Interviews", "Personas", "Jobs to be done", "Prototyping", "Usability testing"],
     },
     {

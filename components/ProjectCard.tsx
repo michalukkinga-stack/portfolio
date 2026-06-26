@@ -67,7 +67,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
             )}
 
             {/* Title */}
-            <h3 className="text-[16px] font-bold text-stone-900 leading-snug mb-2">
+            <h3 className="text-[16px] font-bold text-stone-900 leading-snug mb-[40px]">
               {project.title}
             </h3>
 

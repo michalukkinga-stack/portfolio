@@ -449,7 +449,7 @@ export default function Modal({ project, onClose }: ModalProps) {
                         </h2>
                       </>
                     ) : !hidden ? (
-                      <div className="mb-6">
+                      <div className={/design process/i.test(label) ? "mb-[60px]" : "mb-[40px]"}>
                         <h2
                           className="text-2xl font-semibold text-stone-900 leading-snug"
                           style={{ fontFamily: "var(--font-lora)" }}
